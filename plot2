@@ -1,0 +1,14 @@
+file<-unzip("exdata-data-household_power_consumption.zip")
+consumption<-read.csv(file, sep=";", header=TRUE)
+consumption$Date<-as.Date(consumption$Date,"%d/%m/%Y")
+
+a<-subset(consumption, Date=="2007-02-01")
+a1<-subset(consumption, Date=="2007-02-02")
+cons<-rbind(a,a1)
+##not an elegant way to extact multiple dates but for some reason %in% function didnt work##
+
+cons$Time<-as.POSIXct(paste(cons$Date, cons$Time), format="%Y-%m-%d %H:%M:%S")
+cons$Global_active_power<-as.numeric(cons$Global_active_power)
+
+plot(cons$Time, cons$Global_active_power/1000, ylab="Global Active Power(kw)",xlab="",xaxt='n',type="l")
+axis(1, at=c(min(cons$Time),median(cons$Time),max(cons$Time)),labels=c("Thu","Fr","Sat")) 
