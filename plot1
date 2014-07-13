@@ -1,0 +1,11 @@
+
+file<-unzip("exdata-data-household_power_consumption.zip")
+consumption<-read.csv(file, sep=";", header=TRUE)
+consumption$Date<-as.Date(consumption$Date,"%d/%m/%Y")
+
+a<-subset(consumption, Date=="2007-02-01")
+a1<-subset(consumption, Date=="2007-02-02")
+cons<-rbind(a,a1)
+
+cons$Global_active_power<-as.numeric(cons$Global_active_power)
+hist(cons$Global_active_power/1000, col="red", xlab="Global Active Power(kw)", main="Global active power")
